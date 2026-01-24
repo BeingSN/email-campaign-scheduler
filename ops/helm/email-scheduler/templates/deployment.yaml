@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-scheduler-app
+spec:
+  selector:
+    matchLabels:
+      app: email-scheduler
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: email-scheduler
+    spec:
+      containers:
+        - name: email-scheduler-container
+          image: email-scheduler:1.0.0
+          imagePullPolicy: Never
+          ports:
+              - containerPort: 3000
+                protocol: TCP
+              # data volume from where email-scheduler read data those are written by redis
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: false
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.emailScheduler.configName | quote }}
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  selector:
+    matchLabels:
+      app: email-scheduler
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: email-scheduler
+    spec:
+      containers:
+        - name: redis
+          image: redis:4.0.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+          # data volume where redis writes data
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: redis-data
+---
+# data volume
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data
+  labels:
+    app: email-scheduler
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 64Mi

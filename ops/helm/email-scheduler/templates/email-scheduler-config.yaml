@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.emailScheduler.configName | quote }}
+  labels:
+    app: {{ .Values.emailScheduler.name | quote }}
+data:
+  port: {{ .Values.emailScheduler.params.port | quote }}
+  MONGODB_CONN_URL: {{ .Values.emailScheduler.params.MONGODB_CONN_URL | quote }}
+  rabbitmq_conn_url: {{ .Values.emailScheduler.params.rabbitmq_conn_url | quote }}
+  LOG_ERROR: {{ .Values.emailScheduler.params.LOG_ERROR | quote }}
+  LOG_INFO: {{ .Values.emailScheduler.params.LOG_INFO | quote }}
+  LOG_DEBUG: {{ .Values.emailScheduler.params.LOG_DEBUG | quote }}
+  LOG_API_KEY: {{ .Values.emailScheduler.params.LOG_API_KEY | quote }}
+  APPLICATION_NAME: {{ .Values.emailScheduler.params.APPLICATION_NAME | quote }}
+  LOGGING_NAME: {{ .Values.emailScheduler.params.LOGGING_NAME | quote }}
+  REDIS_HOST: {{ .Values.emailScheduler.params.REDIS_HOST | quote }}
+  REDIS_PORT: {{ .Values.emailScheduler.params.REDIS_PORT | quote }}
+  MAIL_AWS_REGION : {{ .Values.emailScheduler.params.MAIL_AWS_REGION | quote }}
+  AWS_ACCESS_KEY : {{ .Values.emailScheduler.params.AWS_ACCESS_KEY | quote }}
+  AWS_SECRET_KEY : {{ .Values.emailScheduler.params.AWS_SECRET_KEY | quote }}
+  mail_from: {{ .Values.emailScheduler.params.mail_from | quote }}
