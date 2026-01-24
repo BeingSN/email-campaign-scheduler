@@ -1,0 +1,21 @@
+{
+    "parser": "babel-eslint",
+	"env": {
+		"node": true,
+		"es6": true
+	},
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2016
+	},
+	"extends": "airbnb-base",
+	"rules": {
+		"comma-dangle": 0,
+		"max-len": 0,
+        "indent": ["error", 4],
+		"allowAfterThis": [0, true],
+		"allow": 0,
+		"class-methods-use-this": "off",
+		"no-restricted-syntax": ["error","LabeledStatement", "WithStatement"]
+	}
+}
